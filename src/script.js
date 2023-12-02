@@ -2,6 +2,7 @@ import * as THREE from "three";
 import fragment from "./shaders/fragment.glsl";
 import vertex from "./shaders/vertex.glsl";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFloader.js'
 import GUI from 'lil-gui'
 
 export default class Sketch {
@@ -14,7 +15,7 @@ export default class Sketch {
     this.renderer = new THREE.WebGLRenderer();
     this.renderer.setPixelRatio(window.devicePixelRatio);
     this.renderer.setSize(this.width, this.height);
-    this.renderer.setClearColor(0xeeeeee, 1); 
+    // this.renderer.setClearColor(0xeeeeee, 1); 
     // this.renderer.outputEncoding = THREE.sRGBEncoding;
 
     this.container.appendChild(this.renderer.domElement);
@@ -40,6 +41,21 @@ export default class Sketch {
     this.render();
     this.setupResize();
     // this.settings();
+
+    // this.loader = new THREE.ObjectLoader()
+    const model = '/Daruma.glb'
+    this.loader = new GLTFLoader()
+    this.loader.load(model, (gltf)=>{
+      console.log(gltf)
+      this.scene.add(gltf.scene)
+      gltf.scene.traverse( o => {
+          // o.geometry.center()
+          o.scale.set(0.3, 0.3, 0.3)
+          o.position.set(0, -0.65, 0)
+          o.material = this.material
+        }
+      )
+    })
   }
 
   settings() {
@@ -72,6 +88,7 @@ export default class Sketch {
       side: THREE.DoubleSide,
       uniforms: {
         time: { type: "f", value: 0 },
+        tsugaru: {type:'t', value: new THREE.TextureLoader().load('/tsugaru_1.jpg')}, 
         resolution: { type: "v4", value: new THREE.Vector4() },
         uvRate1: {
           value: new THREE.Vector2(1, 1)
@@ -86,7 +103,7 @@ export default class Sketch {
     this.geometry = new THREE.PlaneGeometry(1, 1, 1, 1);
 
     this.plane = new THREE.Mesh(this.geometry, this.material);
-    this.scene.add(this.plane);
+    // this.scene.add(this.plane);
   }
 
   stop() {
