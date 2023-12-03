@@ -2,8 +2,10 @@ import * as THREE from "three";
 import fragment from "./shaders/fragment.glsl";
 import vertex from "./shaders/vertex.glsl";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFloader.js'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import GUI from 'lil-gui'
+
+const model = './Daruma.glb'
 
 export default class Sketch {
   constructor(options) {
@@ -43,7 +45,7 @@ export default class Sketch {
     // this.settings();
 
     // this.loader = new THREE.ObjectLoader()
-    const model = '/Daruma.glb'
+    //const model = '/Daruma.glb'
     this.loader = new GLTFLoader()
     this.loader.load(model, (gltf)=>{
       console.log(gltf)
@@ -92,7 +94,7 @@ export default class Sketch {
       side: THREE.DoubleSide,
       uniforms: {
         time: { type: "f", value: 0 },
-        tsugaru: {type:'t', value: new THREE.TextureLoader().load('/tsugaru_512.jpg')}, 
+        tsugaru: {type:'t', value: new THREE.TextureLoader().load('./tsugaru_512.jpg')}, 
         resolution: { type: "v4", value: new THREE.Vector4() },
         uvRate1: {
           value: new THREE.Vector2(1, 1)

@@ -153,7 +153,7 @@ void main()	{
   float angle = atan(vNormal.x, vNormal.z);
 
   float fresnel = dot(cameraPosition, vNormal);
-  fresnel = abs(0.5 * fresnel * fresnel *fresnel);
+  fresnel = abs(0.7 * fresnel * fresnel *fresnel);
 
   vec2 newFakeUV = vec2((angle+PI)/(2. * PI), phi/PI);
 
