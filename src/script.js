@@ -13,7 +13,7 @@ export default class Sketch {
     this.width = this.container.offsetWidth;
     this.height = this.container.offsetHeight;
     this.renderer = new THREE.WebGLRenderer();
-    this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.renderer.setPixelRatio(window.devicePixelRatio*2);
     this.renderer.setSize(this.width, this.height);
     // this.renderer.setClearColor(0xeeeeee, 1); 
     // this.renderer.outputEncoding = THREE.sRGBEncoding;
@@ -30,7 +30,7 @@ export default class Sketch {
     // var frustumSize = 10;
     // var aspect = window.innerWidth / window.innerHeight;
     // this.camera = new THREE.OrthographicCamera( frustumSize * aspect / - 2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / - 2, -1000, 1000 );
-    this.camera.position.set(0, 0, 2);
+    this.camera.position.set(0, 0, 2.2);
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.time = 0;
 
@@ -38,7 +38,7 @@ export default class Sketch {
     
     this.addObjects();
     this.resize();
-    this.render();
+    
     this.setupResize();
     // this.settings();
 
@@ -48,14 +48,18 @@ export default class Sketch {
     this.loader.load(model, (gltf)=>{
       console.log(gltf)
       this.scene.add(gltf.scene)
+      this.daruma = gltf.scene
+      console.log(this.daruma)
       gltf.scene.traverse( o => {
           // o.geometry.center()
           o.scale.set(0.3, 0.3, 0.3)
-          o.position.set(0, -0.65, 0)
+          o.position.set(0, -0.7, 0)
           o.material = this.material
         }
       )
     })
+
+    this.render();
   }
 
   settings() {
@@ -88,7 +92,7 @@ export default class Sketch {
       side: THREE.DoubleSide,
       uniforms: {
         time: { type: "f", value: 0 },
-        tsugaru: {type:'t', value: new THREE.TextureLoader().load('/tsugaru_1.jpg')}, 
+        tsugaru: {type:'t', value: new THREE.TextureLoader().load('/tsugaru_512.jpg')}, 
         resolution: { type: "v4", value: new THREE.Vector4() },
         uvRate1: {
           value: new THREE.Vector2(1, 1)

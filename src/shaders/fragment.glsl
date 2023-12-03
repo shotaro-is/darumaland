@@ -147,14 +147,31 @@ float cnoise(vec4 P, vec4 rep){
 void main()	{
 	// vec2 newUV = (vUv - vec2(0.5))*resolution.zw + vec2(0.5);
 	float diff = dot(vec3(1.0), vNormal);
+
+  float phi = acos(vNormal.y);
+
+  float angle = atan(vNormal.x, vNormal.z);
+
+  float fresnel = dot(cameraPosition, vNormal);
+  fresnel = abs(0.5 * fresnel * fresnel *fresnel);
+
+  vec2 newFakeUV = vec2((angle+PI)/(2. * PI), phi/PI);
+
 	// vec4 txt = texture2D(tsugaru, vUv * 1.0 * cnoise(vec4(vUv * 20.0, time/20.0, 0.0), vec4(10.0)) );
 	vec2 fakeUV = vec2(dot(vec3(1.0), vNormal), dot(vec3(-1.0, 0.0 , 1.0), vNormal));
-	fakeUV = abs(fakeUV);
-	vec4 txt = texture2D(tsugaru, fakeUV * 1.0 * cnoise(vec4(fakeUV * 10.0, time/5.0, 0.0), vec4(10.0)) );
+	
+  // fakeUV = abs(fakeUV);
+	// fakeUV = fract(fakeUV + vec2(time/400.0, time/200.0)); 
+  
+  
+  vec4 txt = texture2D(tsugaru, newFakeUV * 1.0 * cnoise(vec4(vUv * 200.0, time/5.0, 0.0), vec4(10.0)) );
 
-	// gl_FragColor = vec4(vUv,0.0, 1.0);
+	
+  gl_FragColor = vec4(mix(vec3(0.0), txt.rgb, fresnel), 1.0);
+  // gl_FragColor = vec4(fakeUV,0.0, 1.0);
 	// gl_FragColor = vec4(vNormal, 1.0);
 	// Sgl_FragColor = vec4(vec3(abs(sin(diff*10.0))), 1.0);
-	gl_FragColor = txt;
+	// gl_FragColor = txt;
+  // gl_FragColor = vec4(vec3(fresnel), 1.0);
 	//gl_FragColor = vec4(abs(sin(diff*10.0)));
 }
