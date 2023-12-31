@@ -7,7 +7,7 @@ uniform float progress;
 uniform sampler2D texture1;
 uniform vec4 resolution;
 varying vec2 vUv;
-varying vec2 vNormal;
+varying vec3 vNormal;
 varying vec3 vPosition;
 float PI = 3.141592653589793238;
 
@@ -48,11 +48,16 @@ vec3 palette(float t, float c)
 		y = vec3(0.5,0.5,0.5);
 		z = vec3(2.0,1.0,0.0);
 		w = vec3(0.5,0.20,0.25);
-	} else {
+	} else if (c == 7.0) {
 		x =  vec3(0.8,0.5,0.4);
 		y = vec3(0.2,0.4,0.2);
 		z = vec3(2.0,1.0,1.0);
 		w = vec3(0.0,0.25,0.25);
+	} else {
+		x = vec3(0.5, 0.5, 0.5);
+		y = vec3(0.5, 0.5, 0.5);
+		z = vec3(1.0, 1.0, 1.0);
+		w = vec3(0.0, 0.0, 0.0);
 	}
 
     return x + y*cos( 6.28318*(z*t+w) );
@@ -94,13 +99,21 @@ void main()	{
 
 	for (int i = 0; i < count; ++i)
     {
-        lum += .2 * ripple(length(cursor-(vUv-0.5)), 0.01*time, cycle);
+        lum += .2 * ripple(length(cursor-(vUv-0.5)), 1.0*time, cycle);
         cursor = cursor.x *rot + cursor.y*tor;
     }
 
 	finalColor += col * lum;
 
+	float fresnel = dot(cameraPosition, vNormal);
+  	fresnel = abs(0.7 * fresnel * fresnel *fresnel);
+	
+	gl_FragColor = vec4(mix(vec3(0.0), finalColor, fresnel), 1.0);
+
+
+
+
 	
 
-	gl_FragColor = vec4(finalColor,1.0);
+	//gl_FragColor = vec4(finalColor,1.0);
 }
