@@ -43,8 +43,8 @@ export default class Sketch {
 
     this.camera.position.set(0, 0, 1.5);
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.maxDistance = 2.5;
-    this.controls.minDistance = 1;
+    this.controls.maxDistance = 5.0;
+    this.controls.minDistance = 1.0;
 
     this.time = 0;
 
