@@ -43,7 +43,7 @@ export default class Sketch {
 
     this.camera.position.set(0, 0, 1.5);
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.maxDistance = 5.0;
+    this.controls.maxDistance = 13.0;
     this.controls.minDistance = 1.0;
 
     this.time = 0;
@@ -218,9 +218,9 @@ export default class Sketch {
 
   render() {
     if (!this.isPlaying) return;
-    const alpha = 1/(this.time*0.3);
+    const alpha = 1/(this.time*0.35);
     this.progressBarContainer.style.backgroundColor = `rgba(0, 0, 0, ${alpha}`
-    if (this.time > 20) this.progressBarContainer.style.display = 'none';
+    if (this.time > 15) this.progressBarContainer.style.display = 'none';
 
     this.time += 0.05;
     this.darumaMaterial.uniforms.time.value = this.time;
